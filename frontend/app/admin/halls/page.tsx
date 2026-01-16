@@ -22,6 +22,7 @@ export default function HallManagementPage() {
         setLoading(true);
         const res = await fetch("/api/halls");
         if (res.ok) {
+<<<<<<< HEAD
             const data = await res.json();
             if (data && Array.isArray(data.halls)) {
                 setHalls(data.halls);
@@ -30,6 +31,9 @@ export default function HallManagementPage() {
             } else {
                 setHalls([]);
             }
+=======
+            setHalls(await res.json());
+>>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
         }
         setLoading(false);
     };

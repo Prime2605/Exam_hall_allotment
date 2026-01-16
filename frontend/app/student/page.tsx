@@ -70,7 +70,7 @@ export default function StudentPortal() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    // NEW: Year and Date/Session filters (read-only view)
+    // Year and Date/Session filters (read-only view)
     const [year, setYear] = useState<number>(2);
     const [examDates, setExamDates] = useState<ExamDate[]>([]);
     const [selectedDate, setSelectedDate] = useState<string>("");
@@ -94,7 +94,6 @@ export default function StudentPortal() {
             })
             .catch(() => { });
     }, [year]);
-
 
     // Load halls when block changes
     useEffect(() => {
@@ -176,7 +175,6 @@ export default function StudentPortal() {
                 const student = await res.json();
                 if (student && student.hall) {
                     setSelectedStudent(student);
-                    // Navigate to student's block and hall
                     const targetBlockKey = student.blockKey
                         || blocks.find(b => b.name === student.block)?.key
                         || null;
@@ -280,8 +278,8 @@ export default function StudentPortal() {
                             <button
                                 onClick={() => setYear(1)}
                                 className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${year === 1
-                                        ? "bg-cyan-500 text-white"
-                                        : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
+                                    ? "bg-cyan-500 text-white"
+                                    : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
                                     }`}
                             >
                                 1st
@@ -289,8 +287,8 @@ export default function StudentPortal() {
                             <button
                                 onClick={() => setYear(2)}
                                 className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${year === 2
-                                        ? "bg-cyan-500 text-white"
-                                        : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
+                                    ? "bg-cyan-500 text-white"
+                                    : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
                                     }`}
                             >
                                 2nd
@@ -321,8 +319,8 @@ export default function StudentPortal() {
                             <button
                                 onClick={() => setSelectedSession("FN")}
                                 className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${selectedSession === "FN"
-                                        ? "bg-amber-500 text-white"
-                                        : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
+                                    ? "bg-amber-500 text-white"
+                                    : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
                                     }`}
                             >
                                 🌅 FN
@@ -330,8 +328,8 @@ export default function StudentPortal() {
                             <button
                                 onClick={() => setSelectedSession("AN")}
                                 className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${selectedSession === "AN"
-                                        ? "bg-indigo-500 text-white"
-                                        : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
+                                    ? "bg-indigo-500 text-white"
+                                    : "bg-white/5 text-[var(--text-secondary)] hover:bg-white/10"
                                     }`}
                             >
                                 🌙 AN

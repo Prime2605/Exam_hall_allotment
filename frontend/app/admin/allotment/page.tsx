@@ -14,11 +14,19 @@ export default function AllotmentPage() {
         try {
             const res = await fetch("/api/allot", { method: "POST" });
             const data = await res.json();
+<<<<<<< HEAD
             if (res.ok && data?.status === "success" && Array.isArray(data.log)) {
                 setLogs(data.log);
                 setSuccess(true);
             } else {
                 setLogs(["❌ Failed: " + (data?.message || "Unknown error")]);
+=======
+            if (data.status === "success" && data.log) {
+                setLogs(data.log);
+                setSuccess(true);
+            } else {
+                setLogs(["❌ Failed: " + (data.message || "Unknown error")]);
+>>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
             }
         } catch {
             setLogs(["❌ Network Error - Check if backend is running"]);

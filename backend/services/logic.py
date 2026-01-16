@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from typing import Optional
 import random
 
@@ -54,20 +55,121 @@ def run_allotment(date_str: Optional[str] = None, session_str: Optional[str] = N
         hall_idx = 0
         current_hall_filled = 0
 
+=======
+from sqlalchemy.orm import Session
+from models import Student, Exam, Hall, Allotment
+from typing import List, Dict
+import random
+
+def run_allotment(db: Session, date_str: str = None, session_str: str = None):
+    """
+    Runs the allotment algorithm.
+    If date_str/session_str provided, runs only for that slot.
+    Otherwise runs for all exams in DB.
+    """
+    
+    # query exams
+    query = db.query(Exam)
+    # We are storing dates as DATE objects in DB, but for now assuming string match logic 
+    # or relying on the upload parsing. 
+    # To keep it robust, let's fetch ALL exams and filter in python or iterate by unique date/session.
+    
+    all_exams = query.all()
+    
+    # Group exams by (Date, Session)
+    slots = {}
+    for exam in all_exams:
+        key = (exam.date, exam.session)
+        if key not in slots:
+            slots[key] = []
+        slots[key].append(exam)
+        
+    log = []
+    
+    # Fetch Halls
+    halls = db.query(Hall).all()
+    if not halls:
+        return {"status": "error", "message": "No halls configured"}
+
+    # Process each slot
+    for (date, session), exams in slots.items():
+        if date_str and str(date) != date_str: continue
+        if session_str and session != session_str: continue
+        
+        log.append(f"Processing Slot: {date} {session}")
+        
+        # 1. Identify Students for this slot
+        # We need to find students who have any of the subject codes in `exams` in their `subjects_registered`
+        exam_subject_map = {e.subject_code: e for e in exams}
+        target_subjects = set(exam_subject_map.keys())
+        
+        # Inefficient to query all students, but for <5000 students it's fine for SQLite.
+        # Optimized approach: User `like` query if possible, but comma separation makes it hard.
+        all_students = db.query(Student).all()
+        
+        students_to_seat = []
+        for student in all_students:
+            if not student.subjects_registered: continue
+            
+            # Check overlap
+            student_subs = set(student.subjects_registered.split(","))
+            overlap = student_subs.intersection(target_subjects)
+            
+            for sub in overlap:
+                # Student needs a seat for this subject
+                exam = exam_subject_map[sub]
+                students_to_seat.append({
+                    "student": student,
+                    "exam": exam
+                })
+        
+        log.append(f"  Found {len(students_to_seat)} students to seat.")
+        
+        if not students_to_seat:
+            continue
+
+        # 2. Clear existing allotments for this slot?
+        # Ideally yes, to avoid duplicates or re-run issues.
+        # db.query(Allotment).filter(Allotment.exam_id.in_([e.id for e in exams])).delete(synchronize_session=False)
+
+        # 3. Sort/Shuffle students
+        # To prevent malpractice, maybe shuffle? Or sort by RegNo?
+        # Let's shuffle for "Randomized Seating" logic usually desired.
+        random.shuffle(students_to_seat)
+        
+        # 4. Fill Halls
+        hall_idx = 0
+        current_hall_filled = 0
+        
+>>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
         for item in students_to_seat:
             if hall_idx >= len(halls):
                 log.append("  ❌ CRITICAL: Run out of seats!")
                 break
+<<<<<<< HEAD
 
             hall = halls[hall_idx]
 
             if current_hall_filled >= hall.capacity:
+=======
+            
+            hall = halls[hall_idx]
+            
+            # Check capacity
+            # Need to count allotments already in this hall for this slot?
+            # Since we process slot-by-slot and assuming halls are empty at start of slot logic (after clear),
+            # we can track locally.
+            
+            if current_hall_filled >= hall.capacity:
+                # Move to next hall
+>>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
                 hall_idx += 1
                 current_hall_filled = 0
                 if hall_idx >= len(halls):
                     log.append("  ❌ CRITICAL: Run out of seats!")
                     break
                 hall = halls[hall_idx]
+<<<<<<< HEAD
 
             existing = Allotment.query.filter_by(
                 student_id=item["student"].id,
@@ -86,4 +188,27 @@ def run_allotment(date_str: Optional[str] = None, session_str: Optional[str] = N
 
         db.session.commit()
 
+=======
+            
+            # Assign
+            # Check if already allotted? (Maybe student taking 2 exams in same slot - impossible usually, but good check)
+            
+            existing = db.query(Allotment).filter(
+                Allotment.student_id == item['student'].id,
+                Allotment.exam_id == item['exam'].id
+            ).first()
+            
+            if not existing:
+                allotment = Allotment(
+                    student_id=item['student'].id,
+                    exam_id=item['exam'].id,
+                    hall_id=hall.id,
+                    seat_number=current_hall_filled + 1
+                )
+                db.add(allotment)
+                current_hall_filled += 1
+        
+        db.commit()
+    
+>>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
     return {"status": "success", "log": log}

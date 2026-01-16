@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
+<<<<<<< HEAD
 const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000";
+=======
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+>>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
 
 const nextConfig: NextConfig = {
   // Increase timeout for large file uploads
