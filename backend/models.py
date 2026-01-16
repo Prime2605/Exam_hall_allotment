@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 GCE Erode Exam Seating System - Database Models
 8 Departments × 4 Years × 66 Students = 2,112 Total

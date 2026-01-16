@@ -16,7 +16,6 @@ export default function AdminDashboard() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-<<<<<<< HEAD
                 const res = await fetch("/api/stats");
                 if (res.ok) {
                     const data = await res.json();
@@ -26,20 +25,6 @@ export default function AdminDashboard() {
                         exams: data.totalExams ?? data.total_exams ?? 0,
                     });
                 }
-=======
-                const [hallsRes, studentsRes, examsRes] = await Promise.all([
-                    fetch("/api/halls"),
-                    fetch("/api/students?limit=1"),
-                    fetch("/api/exams?limit=1")
-                ]);
-
-                const halls = hallsRes.ok ? await hallsRes.json() : [];
-                setStats({
-                    halls: Array.isArray(halls) ? halls.length : 0,
-                    students: studentsRes.ok ? (await studentsRes.json()).length || 0 : 0,
-                    exams: examsRes.ok ? (await examsRes.json()).length || 0 : 0
-                });
->>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
             } catch {
                 // Silent fail
             } finally {

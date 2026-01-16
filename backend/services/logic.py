@@ -146,30 +146,16 @@ def run_allotment(db: Session, date_str: str = None, session_str: str = None):
             if hall_idx >= len(halls):
                 log.append("  ❌ CRITICAL: Run out of seats!")
                 break
-<<<<<<< HEAD
 
             hall = halls[hall_idx]
 
             if current_hall_filled >= hall.capacity:
-=======
-            
-            hall = halls[hall_idx]
-            
-            # Check capacity
-            # Need to count allotments already in this hall for this slot?
-            # Since we process slot-by-slot and assuming halls are empty at start of slot logic (after clear),
-            # we can track locally.
-            
-            if current_hall_filled >= hall.capacity:
-                # Move to next hall
->>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
                 hall_idx += 1
                 current_hall_filled = 0
                 if hall_idx >= len(halls):
                     log.append("  ❌ CRITICAL: Run out of seats!")
                     break
                 hall = halls[hall_idx]
-<<<<<<< HEAD
 
             existing = Allotment.query.filter_by(
                 student_id=item["student"].id,
@@ -188,27 +174,6 @@ def run_allotment(db: Session, date_str: str = None, session_str: str = None):
 
         db.session.commit()
 
-=======
-            
-            # Assign
-            # Check if already allotted? (Maybe student taking 2 exams in same slot - impossible usually, but good check)
-            
-            existing = db.query(Allotment).filter(
-                Allotment.student_id == item['student'].id,
-                Allotment.exam_id == item['exam'].id
-            ).first()
-            
-            if not existing:
-                allotment = Allotment(
-                    student_id=item['student'].id,
-                    exam_id=item['exam'].id,
-                    hall_id=hall.id,
-                    seat_number=current_hall_filled + 1
-                )
-                db.add(allotment)
-                current_hall_filled += 1
-        
-        db.commit()
-    
->>>>>>> 2d8beaa9fd737bb6d330f13204e5079f2524bfcb
+    return {"status": "success", "log": log}
+
     return {"status": "success", "log": log}

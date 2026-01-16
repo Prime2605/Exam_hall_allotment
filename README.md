@@ -19,20 +19,14 @@ A web application for automating exam hall seat allocation for university examin
 | Database | SQLite |
 | PDF Parsing | pypdf |
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-
 ### Backend Setup
 ```bash
 cd backend
 python -m venv venv
 .\venv\Scripts\activate  # Windows
 # source venv/bin/activate  # Linux/Mac
-pip install fastapi uvicorn sqlalchemy pypdf python-multipart reportlab pandas
-uvicorn main:app --reload
+pip install -r requirements.txt
+python app.py
 ```
 
 ### Frontend Setup
