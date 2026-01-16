@@ -89,6 +89,27 @@ antigravity/
 | `/api/allotment/run` | POST | Execute seat allocation |
 | `/api/search/{reg_no}` | GET | Search student allocation |
 
+## 🌐 Vercel Deployment
+
+### Deploy Frontend
+1. Push code to GitHub
+2. Go to [Vercel Dashboard](https://vercel.com/new)
+3. Import your repository
+4. Set **Root Directory** to `frontend`
+5. Add environment variable: `NEXT_PUBLIC_API_URL` = your backend URL
+6. Click **Deploy**
+
+### Deploy Backend (Railway/Render)
+The Python Flask backend needs a separate hosting service:
+- **Railway**: https://railway.app
+- **Render**: https://render.com
+
+Set these environment variables:
+```
+DATABASE_URL=your_database_url
+SECRET_KEY=your_secret_key
+```
+
 ## 📄 License
 
 MIT License
@@ -96,3 +117,4 @@ MIT License
 ## 👨‍💻 Author
 
 Sudarsanam R
+Prime R S
