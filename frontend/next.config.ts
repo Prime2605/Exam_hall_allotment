@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 const nextConfig: NextConfig = {
   // Increase timeout for large file uploads
   experimental: {
@@ -9,15 +11,15 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://127.0.0.1:8000/api/:path*", // Proxy to Backend
+        destination: `${backendUrl}/api/:path*`, // Proxy to Backend
       },
       {
         source: "/docs", // Swagger UI
-        destination: "http://127.0.0.1:8000/docs",
+        destination: `${backendUrl}/docs`,
       },
       {
         source: "/openapi.json", // OpenAPI Spec
-        destination: "http://127.0.0.1:8000/openapi.json",
+        destination: `${backendUrl}/openapi.json`,
       }
     ];
   },
