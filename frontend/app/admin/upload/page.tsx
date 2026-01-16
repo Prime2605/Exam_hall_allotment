@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 
 export default function UploadPage() {
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState<string | null>(null);
+    const [message, setMessage] = useState<{ type: "success" | "error" | "info"; text: string } | null>(null);
     const timetableRef = useRef<HTMLInputElement>(null);
     const studentRef = useRef<HTMLInputElement>(null);
 
@@ -12,7 +12,7 @@ export default function UploadPage() {
         setLoading(true);
 
         const totalSize = Array.from(files).reduce((sum, f) => sum + f.size, 0);
-        setMessage(`Uploading ${files.length} file(s) (${(totalSize / 1024 / 1024).toFixed(2)} MB)... This may take a moment.`);
+        setMessage({ type: "info", text: `Uploading ${files.length} file(s) (${(totalSize / 1024 / 1024).toFixed(2)} MB)...` });
 
         const formData = new FormData();
         Array.from(files).forEach(file => {
@@ -21,7 +21,7 @@ export default function UploadPage() {
 
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 180000); // 3 min timeout
+            const timeoutId = setTimeout(() => controller.abort(), 180000);
 
             const res = await fetch(`/api/upload/${type}`, {
                 method: "POST",
@@ -33,15 +33,15 @@ export default function UploadPage() {
             const data = await res.json();
 
             if (res.ok) {
-                setMessage(`✅ Successfully parsed ${type}: ${data.parsed_count} records found, ${data.saved_count || 0} new saved.`);
+                setMessage({ type: "success", text: `Successfully parsed ${type}: ${data.parsed_count} records found, ${data.saved_count || 0} new saved.` });
             } else {
-                setMessage(`❌ Error: ${data.message || 'Unknown error'}`);
+                setMessage({ type: "error", text: data.message || "Unknown error occurred" });
             }
         } catch (err: unknown) {
             if (err instanceof Error && err.name === 'AbortError') {
-                setMessage("❌ Upload timed out. Try uploading fewer files at once.");
+                setMessage({ type: "error", text: "Upload timed out. Try uploading fewer files at once." });
             } else {
-                setMessage("❌ Upload failed. Check if the backend server is running.");
+                setMessage({ type: "error", text: "Upload failed. Check if the backend server is running." });
             }
         } finally {
             setLoading(false);
@@ -49,20 +49,37 @@ export default function UploadPage() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Upload Data</h1>
+        <div>
+            {/* Header */}
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">Upload Data</h1>
+                <p className="text-[var(--text-muted)]">Upload exam timetables and student registration PDFs</p>
+            </div>
 
+            {/* Alert Message */}
             {message && (
-                <div className={`mb-6 p-4 rounded-lg ${message.startsWith("✅") ? "bg-green-100 text-green-800" : message.startsWith("❌") ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"}`}>
-                    {message}
+                <div className={`alert mb-6 ${message.type === "success" ? "alert-success" : message.type === "error" ? "alert-error" : "alert-info"}`}>
+                    <span className="text-xl">
+                        {message.type === "success" ? "✓" : message.type === "error" ? "✕" : "⏳"}
+                    </span>
+                    {message.text}
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Upload Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Timetable Upload */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-4">📅 Exam Timetable PDFs</h2>
-                    <p className="text-gray-600 mb-4 text-sm">Upload one or more timetable PDFs (AUCR2017, AUCR2021, AUCR2025, etc.)</p>
+                <div className="glass-card p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 flex items-center justify-center text-2xl">
+                            📅
+                        </div>
+                        <div>
+                            <h2 className="text-lg font-semibold text-[var(--text-primary)]">Exam Timetable</h2>
+                            <p className="text-sm text-[var(--text-muted)]">AUCR2017, AUCR2021, AUCR2025</p>
+                        </div>
+                    </div>
+
                     <input
                         type="file"
                         accept=".pdf"
@@ -75,16 +92,30 @@ export default function UploadPage() {
                     />
                     <label
                         htmlFor="timetable-upload"
-                        className={`block w-full py-3 px-4 text-center rounded-lg cursor-pointer font-semibold transition ${loading ? "bg-gray-300 text-gray-500" : "bg-blue-600 text-white hover:bg-blue-700"}`}
+                        className={`upload-zone block ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
-                        {loading ? "Uploading..." : "Select Timetable PDF(s)"}
+                        <div className="text-4xl mb-3">📄</div>
+                        <div className="font-medium text-[var(--text-primary)] mb-1">
+                            {loading ? "Uploading..." : "Click to select PDF(s)"}
+                        </div>
+                        <div className="text-sm text-[var(--text-muted)]">
+                            or drag and drop files here
+                        </div>
                     </label>
                 </div>
 
                 {/* Student List Upload */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-4">👥 Student List PDFs</h2>
-                    <p className="text-gray-600 mb-4 text-sm">Upload one or more student registration preview PDFs</p>
+                <div className="glass-card p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center text-2xl">
+                            👥
+                        </div>
+                        <div>
+                            <h2 className="text-lg font-semibold text-[var(--text-primary)]">Student Registrations</h2>
+                            <p className="text-sm text-[var(--text-muted)]">Registration preview PDFs</p>
+                        </div>
+                    </div>
+
                     <input
                         type="file"
                         accept=".pdf"
@@ -97,15 +128,25 @@ export default function UploadPage() {
                     />
                     <label
                         htmlFor="student-upload"
-                        className={`block w-full py-3 px-4 text-center rounded-lg cursor-pointer font-semibold transition ${loading ? "bg-gray-300 text-gray-500" : "bg-green-600 text-white hover:bg-green-700"}`}
+                        className={`upload-zone block ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
-                        {loading ? "Uploading..." : "Select Student PDF(s)"}
+                        <div className="text-4xl mb-3">📋</div>
+                        <div className="font-medium text-[var(--text-primary)] mb-1">
+                            {loading ? "Uploading..." : "Click to select PDF(s)"}
+                        </div>
+                        <div className="text-sm text-[var(--text-muted)]">
+                            or drag and drop files here
+                        </div>
                     </label>
                 </div>
             </div>
 
-            <div className="mt-8 p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
-                <strong>Tip:</strong> You can select multiple PDF files at once using Ctrl+Click or Shift+Click.
+            {/* Help Text */}
+            <div className="mt-6 glass-card p-4 flex items-center gap-3">
+                <span className="text-xl">💡</span>
+                <span className="text-sm text-[var(--text-secondary)]">
+                    <strong>Tip:</strong> Select multiple PDF files at once using Ctrl+Click or Shift+Click. Large uploads may take a few moments to process.
+                </span>
             </div>
         </div>
     );

@@ -43,68 +43,73 @@ export default function ExamsPage() {
     };
 
     return (
-        <div className="max-w-6xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Parsed Exams</h1>
+        <div>
+            {/* Header */}
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">Exams</h1>
+                <p className="text-[var(--text-muted)]">View parsed exam schedule from timetables</p>
+            </div>
 
             {/* Filter Bar */}
-            <form onSubmit={handleFilter} className="mb-6 flex gap-4 items-end">
-                <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Subject Code</label>
-                    <input
-                        type="text"
-                        value={codeFilter}
-                        onChange={(e) => setCodeFilter(e.target.value)}
-                        placeholder="e.g. CS25"
-                        className="w-full rounded-lg border-2 border-gray-400 shadow-sm focus:border-blue-600 focus:ring-blue-600 px-4 py-2 bg-white"
-                    />
+            <form onSubmit={handleFilter} className="glass-card p-4 mb-6">
+                <div className="flex gap-4 items-end flex-wrap">
+                    <div className="flex-1 min-w-[200px]">
+                        <label className="label">Subject Code</label>
+                        <input
+                            type="text"
+                            value={codeFilter}
+                            onChange={(e) => setCodeFilter(e.target.value)}
+                            placeholder="e.g. CS25"
+                            className="input"
+                        />
+                    </div>
+                    <div className="w-32">
+                        <label className="label">Session</label>
+                        <select
+                            value={sessionFilter}
+                            onChange={(e) => setSessionFilter(e.target.value)}
+                            className="select"
+                        >
+                            <option value="">All</option>
+                            <option value="FN">FN (Morning)</option>
+                            <option value="AN">AN (Afternoon)</option>
+                        </select>
+                    </div>
+                    <button type="submit" className="btn btn-primary h-[46px]">
+                        <span>🔍</span>
+                        Filter
+                    </button>
                 </div>
-                <div className="w-32">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Session</label>
-                    <select
-                        value={sessionFilter}
-                        onChange={(e) => setSessionFilter(e.target.value)}
-                        className="w-full rounded-lg border-2 border-gray-400 shadow-sm focus:border-blue-600 focus:ring-blue-600 px-4 py-2 bg-white"
-                    >
-                        <option value="">All</option>
-                        <option value="FN">FN</option>
-                        <option value="AN">AN</option>
-                    </select>
-                </div>
-                <button
-                    type="submit"
-                    className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md"
-                >
-                    Filter
-                </button>
             </form>
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+            <div className="table-container">
+                <table className="table">
+                    <thead>
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Session</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject Name</th>
+                            <th>Date</th>
+                            <th>Session</th>
+                            <th>Code</th>
+                            <th>Subject Name</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody>
                         {exams.map((e) => (
-                            <tr key={e.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{e.date}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                    <span className={`px-2 py-1 rounded text-xs font-semibold ${e.session === "FN" ? "bg-yellow-100 text-yellow-800" : "bg-purple-100 text-purple-800"}`}>
+                            <tr key={e.id}>
+                                <td className="text-[var(--text-primary)]">{e.date}</td>
+                                <td>
+                                    <span className={`badge ${e.session === "FN" ? "badge-warning" : "badge-secondary"}`}>
                                         {e.session}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-blue-600">{e.subject_code}</td>
-                                <td className="px-6 py-4 text-sm text-gray-500">{e.subject_name}</td>
+                                <td className="font-mono text-[var(--accent-primary)]">{e.subject_code}</td>
+                                <td>{e.subject_name}</td>
                             </tr>
                         ))}
                         {!loading && exams.length === 0 && (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                                <td colSpan={4} className="text-center py-12 text-[var(--text-muted)]">
+                                    <div className="text-4xl mb-3">📅</div>
                                     No exams found. Upload a Timetable PDF first.
                                 </td>
                             </tr>
@@ -115,35 +120,37 @@ export default function ExamsPage() {
 
             {/* Pagination */}
             <div className="flex justify-between items-center mt-6">
-                <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600">
+                <div className="flex items-center gap-4 text-sm text-[var(--text-muted)]">
+                    <span>
                         Showing {exams.length > 0 ? page * pageSize + 1 : 0} - {page * pageSize + exams.length}
                     </span>
-                    <span className="text-gray-300">|</span>
-                    <label className="text-sm text-gray-600">Per page:</label>
-                    <select
-                        value={pageSize}
-                        onChange={(e) => { setPageSize(Number(e.target.value)); setPage(0); }}
-                        className="rounded-md border-2 border-gray-400 px-2 py-1 text-sm bg-white focus:border-blue-600"
-                    >
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                        <option value={200}>200</option>
-                        <option value={500}>500</option>
-                    </select>
+                    <span>|</span>
+                    <div className="flex items-center gap-2">
+                        <span>Per page:</span>
+                        <select
+                            value={pageSize}
+                            onChange={(e) => { setPageSize(Number(e.target.value)); setPage(0); }}
+                            className="select w-20 py-2 px-3 text-sm"
+                        >
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                            <option value={200}>200</option>
+                            <option value={500}>500</option>
+                        </select>
+                    </div>
                 </div>
-                <div className="space-x-2">
+                <div className="pagination">
                     <button
                         onClick={() => setPage(Math.max(0, page - 1))}
                         disabled={page === 0}
-                        className="px-5 py-2 bg-gray-700 text-white rounded-lg text-sm font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                        className="page-btn"
                     >
                         ← Previous
                     </button>
                     <button
                         onClick={() => setPage(page + 1)}
                         disabled={exams.length < pageSize}
-                        className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                        className="page-btn"
                     >
                         Next →
                     </button>

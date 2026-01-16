@@ -31,44 +31,78 @@ export default function ResultsPage() {
     };
 
     return (
-        <div className="max-w-6xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Allotment Results</h1>
-                <div className="space-x-4">
-                    <a href="/api/reports/excel" className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium hover:no-underline">Download Excel</a>
-                    <a href="/api/reports/pdf" className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-medium hover:no-underline">Download PDF</a>
+        <div>
+            {/* Header */}
+            <div className="flex justify-between items-start mb-8 flex-wrap gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">Allotment Results</h1>
+                    <p className="text-[var(--text-muted)]">View and export seat allocations</p>
+                </div>
+                <div className="flex gap-3">
+                    <a href="/api/reports/excel" className="btn btn-success">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Excel
+                    </a>
+                    <a href="/api/reports/pdf" className="btn btn-danger">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        PDF
+                    </a>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+            {/* Summary */}
+            {data.length > 0 && (
+                <div className="glass-card p-4 mb-6 flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500/20 to-green-600/20 flex items-center justify-center text-xl">
+                        ✓
+                    </div>
+                    <div>
+                        <span className="text-[var(--text-primary)] font-medium">{data.length}</span>
+                        <span className="text-[var(--text-muted)]"> seat allocations generated</span>
+                    </div>
+                </div>
+            )}
+
+            {/* Table */}
+            <div className="table-container">
+                <table className="table">
+                    <thead>
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reg No</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hall</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seat</th>
+                            <th>Reg No</th>
+                            <th>Student Name</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Hall</th>
+                            <th>Seat</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody>
                         {data.map((row) => (
-                            <tr key={row.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{row.student_reg}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{row.student_name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">{row.exam_subject}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{row.exam_date}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold text-blue-600">{row.hall_name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 bg-gray-50 text-center font-bold">
-                                    {row.seat_number}
+                            <tr key={row.id}>
+                                <td className="font-mono text-[var(--accent-primary)]">{row.student_reg}</td>
+                                <td className="font-medium text-[var(--text-primary)]">{row.student_name}</td>
+                                <td className="font-mono text-sm">{row.exam_subject}</td>
+                                <td>{row.exam_date}</td>
+                                <td>
+                                    <span className="badge badge-secondary">{row.hall_name}</span>
+                                </td>
+                                <td>
+                                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[rgba(0,212,255,0.1)] text-[var(--accent-primary)] font-bold">
+                                        {row.seat_number}
+                                    </span>
                                 </td>
                             </tr>
                         ))}
                         {!loading && data.length === 0 && (
                             <tr>
-                                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                    No allotments found. Run the allotment process first.
+                                <td colSpan={6} className="text-center py-12 text-[var(--text-muted)]">
+                                    <div className="text-4xl mb-3">📋</div>
+                                    <div className="mb-2">No allotments found</div>
+                                    <div className="text-sm">Run the allotment process first from the "Run Allotment" page.</div>
                                 </td>
                             </tr>
                         )}

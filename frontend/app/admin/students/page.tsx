@@ -46,78 +46,86 @@ export default function StudentsPage() {
     };
 
     return (
-        <div className="max-w-6xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Parsed Students</h1>
+        <div>
+            {/* Header */}
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">Students</h1>
+                <p className="text-[var(--text-muted)]">View and filter parsed student registrations</p>
+            </div>
 
             {/* Filter Bar */}
-            <form onSubmit={handleFilter} className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Search (Reg No / Name)</label>
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="e.g. 731125104003"
-                        className="w-full rounded-lg border-2 border-gray-400 shadow-sm focus:border-blue-600 focus:ring-blue-600 px-4 py-2 bg-white"
-                    />
+            <form onSubmit={handleFilter} className="glass-card p-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label className="label">Search (Reg No / Name)</label>
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="e.g. 731125104003"
+                            className="input"
+                        />
+                    </div>
+                    <div>
+                        <label className="label">Department</label>
+                        <input
+                            type="text"
+                            value={deptFilter}
+                            onChange={(e) => setDeptFilter(e.target.value)}
+                            placeholder="e.g. Computer Science"
+                            className="input"
+                        />
+                    </div>
+                    <div>
+                        <label className="label">Subject Code</label>
+                        <input
+                            type="text"
+                            value={subjectFilter}
+                            onChange={(e) => setSubjectFilter(e.target.value)}
+                            placeholder="e.g. CS25C01"
+                            className="input"
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary h-[46px]">
+                        <span>🔍</span>
+                        Apply Filters
+                    </button>
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                    <input
-                        type="text"
-                        value={deptFilter}
-                        onChange={(e) => setDeptFilter(e.target.value)}
-                        placeholder="e.g. Computer Science"
-                        className="w-full rounded-lg border-2 border-gray-400 shadow-sm focus:border-blue-600 focus:ring-blue-600 px-4 py-2 bg-white"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Subject Code</label>
-                    <input
-                        type="text"
-                        value={subjectFilter}
-                        onChange={(e) => setSubjectFilter(e.target.value)}
-                        placeholder="e.g. CS25C01"
-                        className="w-full rounded-lg border-2 border-gray-400 shadow-sm focus:border-blue-600 focus:ring-blue-600 px-4 py-2 bg-white"
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md h-[44px]"
-                >
-                    Apply Filters
-                </button>
             </form>
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+            <div className="table-container">
+                <table className="table">
+                    <thead>
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reg No</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subjects</th>
+                            <th>Reg No</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Subjects</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody>
                         {students.map((s) => (
-                            <tr key={s.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{s.reg_no}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{s.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{s.department}</td>
-                                <td className="px-6 py-4 text-sm text-gray-500">
+                            <tr key={s.id}>
+                                <td className="font-mono text-[var(--accent-primary)]">{s.reg_no}</td>
+                                <td className="font-medium text-[var(--text-primary)]">{s.name}</td>
+                                <td>{s.department}</td>
+                                <td>
                                     <div className="flex flex-wrap gap-1 max-w-md">
-                                        {s.subjects_registered.map((sub) => (
-                                            <span key={sub} className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">{sub}</span>
+                                        {s.subjects_registered.slice(0, 5).map((sub) => (
+                                            <span key={sub} className="badge badge-secondary text-xs">{sub}</span>
                                         ))}
+                                        {s.subjects_registered.length > 5 && (
+                                            <span className="badge badge-primary text-xs">+{s.subjects_registered.length - 5}</span>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
                         ))}
                         {!loading && students.length === 0 && (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                                <td colSpan={4} className="text-center py-12 text-[var(--text-muted)]">
+                                    <div className="text-4xl mb-3">👥</div>
                                     No students found. Try adjusting filters or upload a Student List PDF first.
                                 </td>
                             </tr>
@@ -128,35 +136,37 @@ export default function StudentsPage() {
 
             {/* Pagination */}
             <div className="flex justify-between items-center mt-6">
-                <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600">
+                <div className="flex items-center gap-4 text-sm text-[var(--text-muted)]">
+                    <span>
                         Showing {students.length > 0 ? page * pageSize + 1 : 0} - {page * pageSize + students.length}
                     </span>
-                    <span className="text-gray-300">|</span>
-                    <label className="text-sm text-gray-600">Per page:</label>
-                    <select
-                        value={pageSize}
-                        onChange={(e) => { setPageSize(Number(e.target.value)); setPage(0); }}
-                        className="rounded-md border-2 border-gray-400 px-2 py-1 text-sm bg-white focus:border-blue-600"
-                    >
-                        <option value={25}>25</option>
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                        <option value={200}>200</option>
-                    </select>
+                    <span className="text-[var(--text-muted)]">|</span>
+                    <div className="flex items-center gap-2">
+                        <span>Per page:</span>
+                        <select
+                            value={pageSize}
+                            onChange={(e) => { setPageSize(Number(e.target.value)); setPage(0); }}
+                            className="select w-20 py-2 px-3 text-sm"
+                        >
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                            <option value={200}>200</option>
+                        </select>
+                    </div>
                 </div>
-                <div className="space-x-2">
+                <div className="pagination">
                     <button
                         onClick={() => setPage(Math.max(0, page - 1))}
                         disabled={page === 0}
-                        className="px-5 py-2 bg-gray-700 text-white rounded-lg text-sm font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                        className="page-btn"
                     >
                         ← Previous
                     </button>
                     <button
                         onClick={() => setPage(page + 1)}
                         disabled={students.length < pageSize}
-                        className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                        className="page-btn"
                     >
                         Next →
                     </button>
