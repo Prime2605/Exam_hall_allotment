@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCE Erode - Anna University Exams Nov/Dec 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a12;
+            --bg-secondary: #12121e;
+            --bg-card: #1a1a2e;
+            --accent-cyan: #00d4ff;
+            --accent-green: #39ff14;
+            --accent-gold: #ffd700;
+            --accent-red: #ff4757;
+            --accent-blue: #0066ff;
+            --accent-orange: #ff6b35;
+            --accent-purple: #a855f7;
+            --accent-pink: #ff69b4;
+            --accent-teal: #14b8a6;
+            --text-primary: #ffffff;
+            --text-secondary: #8b8b9a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(57, 255, 20, 0.08) 0%, transparent 50%);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .session-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .session-selector select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .live-badge {
+            background: linear-gradient(135deg, var(--accent-green), #00ff88);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #0a0a12;
+        }
+
+        .live-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #0a0a12;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Block Cards */
+        .blocks-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .block-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .block-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .block-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+
+        .block-card.t-block::before {
+            background: var(--accent-orange);
+        }
+
+        .block-card.ct-block::before {
+            background: var(--accent-cyan);
+        }
+
+        .block-card.eee-block::before {
+            background: var(--accent-green);
+        }
+
+        .block-card.m-block::before {
+            background: var(--accent-purple);
+        }
+
+        .block-card.ah-block::before {
+            background: var(--accent-pink);
+        }
+
+        .block-card.a-block::before {
+            background: var(--accent-gold);
+        }
+
+        .block-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .block-card.active {
+            border-color: var(--accent-gold);
+        }
+
+        .block-card .block-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .block-card .block-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .block-card .block-halls {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .block-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .fill-badge {
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .fill-badge.available {
+            background: rgba(57, 255, 20, 0.2);
+            color: var(--accent-green);
+        }
+
+        .fill-badge.filling {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--accent-gold);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 260px 1fr 300px;
+            gap: 1.5rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Hall List */
+        .hall-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .hall-item {
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hall-item:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .hall-item.active {
+            border-color: var(--accent-gold);
+        }
+
+        .hall-item .hall-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .hall-item .hall-depts {
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            margin: 0.25rem 0;
+        }
+
+        .hall-item .hall-capacity {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: var(--bg-primary);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+        }
+
+        /* Seating Area */
+        .seating-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .seating-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .seating-title h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .seating-title p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: white;
+        }
+
+        /* Invigilator Desk */
+        .invigilator-desk {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Seat Grid */
+        .seat-grid-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.6rem;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .seat {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 0.55rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+            padding: 0.2rem;
+        }
+
+        .seat:hover {
+            transform: scale(1.1) translateY(-3px);
+            z-index: 10;
+        }
+
+        .seat .seat-label {
+            font-size: 0.55rem;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .seat .seat-number {
+            font-size: 0.5rem;
+            opacity: 0.6;
+            margin-top: 0.15rem;
+        }
+
+        /* Department Colors */
+        .seat-auto {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.4), rgba(255, 107, 53, 0.2));
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .seat-civil {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.4), rgba(20, 184, 166, 0.2));
+            border-color: var(--accent-teal);
+            color: var(--accent-teal);
+        }
+
+        .seat-cse {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.4), rgba(0, 102, 255, 0.2));
+            border-color: var(--accent-blue);
+            color: #66b3ff;
+        }
+
+        .seat-eee {
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.4), rgba(57, 255, 20, 0.2));
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .seat-ece {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.4), rgba(0, 212, 255, 0.2));
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .seat-mech {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(168, 85, 247, 0.2));
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .seat-cseds {
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.4), rgba(255, 105, 180, 0.2));
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+
+        .seat-it {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.2));
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .seat-arrear {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.4), rgba(255, 71, 87, 0.2));
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .seat-empty {
+            background: var(--bg-secondary);
+            border-color: var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        .seat-your-seat {
+            background: linear-gradient(135deg, var(--accent-gold), #ffa500) !important;
+            border-color: var(--accent-gold) !important;
+            color: #0a0a12 !important;
+            box-shadow: 0 0 30px var(--accent-gold), 0 0 60px rgba(255, 215, 0, 0.4) !important;
+            animation: goldPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes goldPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-color-auto {
+            background: var(--accent-orange);
+        }
+
+        .legend-color-civil {
+            background: var(--accent-teal);
+        }
+
+        .legend-color-cse {
+            background: var(--accent-blue);
+        }
+
+        .legend-color-eee {
+            background: var(--accent-green);
+        }
+
+        .legend-color-ece {
+            background: var(--accent-cyan);
+        }
+
+        .legend-color-mech {
+            background: var(--accent-purple);
+        }
+
+        .legend-color-cseds {
+            background: var(--accent-pink);
+        }
+
+        .legend-color-it {
+            background: var(--accent-gold);
+        }
+
+        .modal-reg-no {
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+        }
+
+        .modal-badges {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.75rem;
+        }
+
+        .modal-dept-badge {
+            color: white;
+        }
+
+        .modal-seat-badge {
+            background: var(--accent-gold);
+            color: #0a0a12;
+        }
+
+        /* Right Panel */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+        }
+
+        /* Exam Pass */
+        .exam-pass {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .pass-header {
+            padding: 0.8rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+        }
+
+        .pass-header h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .pass-header .pass-sub {
+            font-size: 0.6rem;
+            opacity: 0.8;
+            margin-top: 0.2rem;
+        }
+
+        .pass-body {
+            padding: 1rem;
+        }
+
+        .pass-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .pass-row .label {
+            color: var(--text-secondary);
+        }
+
+        .pass-row .value {
+            font-weight: 600;
+        }
+
+        .pass-venue {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin: 0.75rem 0;
+            text-align: center;
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        .pass-venue .venue-label {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .pass-venue .venue-block {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin: 0.2rem 0;
+        }
+
+        .pass-venue .venue-hall {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .pass-seat {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+        }
+
+        .pass-seat .seat-label {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+        }
+
+        .pass-seat .seat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px var(--accent-gold);
+        }
+
+        .pass-seat .seat-pos {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        .qr-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--glass-border);
+        }
+
+        .qr-code {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
+            color: #333;
+        }
+
+        .qr-info {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+        }
+
+        .qr-info .scan-text {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-width: 380px;
+            width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .student-info-modal {
+            text-align: center;
+        }
+
+        .student-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 0.75rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar,
+            .info-panel {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .block-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .seat {
+                font-size: 0.45rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>GCE ERODE</h1>
+                <div class="logo-sub">Anna University Exams - Nov/Dec 2025</div>
+            </div>
+            <div class="session-selector">
+                <select id="examDate" onchange="changeSession()" title="Select Exam Date" aria-label="Select Exam Date">
+                    <option value="2025-12-20">Dec 20, 2025</option>
+                    <option value="2025-12-22">Dec 22, 2025</option>
+                    <option value="2025-12-23">Dec 23, 2025</option>
+                    <option value="2025-12-24" selected>Dec 24, 2025</option>
+                    <option value="2025-12-27">Dec 27, 2025</option>
+                    <option value="2025-12-29">Dec 29, 2025</option>
+                    <option value="2025-12-31">Dec 31, 2025</option>
+                </select>
+                <select id="examSession" onchange="changeSession()" title="Select Exam Session"
+                    aria-label="Select Exam Session">
+                    <option value="FN" selected>FN (10 AM - 1 PM)</option>
+                    <option value="AN">AN (2 PM - 5 PM)</option>
+                </select>
+                <span class="live-badge">Live</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Block Cards -->
+        <section class="blocks-section">
+            <h2 class="section-title">🏛️ Campus Blocks</h2>
+            <div class="block-cards" id="blockCards"></div>
+        </section>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="card">
+                    <h3 class="card-title">🚪 Halls in Block</h3>
+                    <div class="hall-list" id="hallList"></div>
+                </div>
+            </aside>
+
+            <!-- Seating Area -->
+            <section class="seating-area">
+                <div class="seating-header">
+                    <div class="seating-title">
+                        <h2 id="currentHallTitle">Select a Hall</h2>
+                        <p id="currentHallInfo">Choose a block and hall to view seating</p>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="resetSeating()">↻ Reset</button>
+                        <button class="btn btn-primary" onclick="autoAssign()">⚡ Auto-Assign</button>
+                    </div>
+                </div>
+
+                <div class="seat-grid-container">
+                    <div class="invigilator-desk">🎓 Invigilator's Desk</div>
+                    <div class="seat-grid" id="seatGrid"></div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-auto"></div>AUTO
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-civil"></div>CIVIL
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-cse"></div>CSE
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-eee"></div>EEE
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-ece"></div>ECE
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-mech"></div>MECH
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-cseds"></div>CSEDS
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-color-it"></div>IT
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel -->
+            <aside class="info-panel">
+                <div class="card">
+                    <h3 class="card-title">🔍 Find Student</h3>
+                    <div class="search-box">
+                        <input type="text" id="studentSearch" placeholder="Enter Reg No (e.g., 731125104001)"
+                            onkeyup="searchStudent(event)">
+                    </div>
+                </div>
+
+                <div class="exam-pass" id="examPass">
+                    <div class="pass-header">
+                        <h3>🎫 Exam Pass</h3>
+                        <div class="pass-sub">Anna University Nov/Dec 2025</div>
+                    </div>
+                    <div class="pass-body">
+                        <div class="pass-row"><span class="label">Reg No</span><span class="value"
+                                id="passRegNo">—</span></div>
+                        <div class="pass-row"><span class="label">Name</span><span class="value" id="passName">—</span>
+                        </div>
+                        <div class="pass-row"><span class="label">Dept</span><span class="value" id="passDept">—</span>
+                        </div>
+                        <div class="pass-venue">
+                            <div class="venue-label">Venue</div>
+                            <div class="venue-block" id="passBlock">—</div>
+                            <div class="venue-hall" id="passHall">—</div>
+                        </div>
+                        <div class="pass-seat">
+                            <div class="seat-label">YOUR SEAT</div>
+                            <div class="seat-value" id="passSeat">—</div>
+                            <div class="seat-pos" id="passSeatPos">Row — Col —</div>
+                        </div>
+                        <div class="qr-section">
+                            <div class="qr-code">QR</div>
+                            <div class="qr-info">
+                                <div class="scan-text">📱 Scan for Entry</div>
+                                <div>Show to invigilator</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">📊 Session Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statStudents">0</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statHalls">0</div>
+                            <div class="stat-label">Halls</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statDepts">8</div>
+                            <div class="stat-label">Depts</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statCapacity">100%</div>
+                            <div class="stat-label">Utilized</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="seatModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Seat Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="student-info-modal">
+                <div class="student-avatar" id="modalAvatar">👤</div>
+                <h4 id="modalName">—</h4>
+                <p id="modalRegNo" class="modal-reg-no">—</p>
+                <div class="modal-badges">
+                    <span class="live-badge modal-dept-badge" id="modalDept">—</span>
+                    <span class="live-badge modal-seat-badge" id="modalSeat">—</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== GCE ERODE DATA ====================
+
+        // Block Configuration (Real GCE Halls)
+        const blocks = {
+            T: {
+                name: 'T Block',
+                icon: '🏢',
+                color: 't-block',
+                halls: ['T 1', 'T 2', 'T 3', 'T 6 A', 'T 6 B']
+            },
+            CT: {
+                name: 'CT Block',
+                icon: '📡',
+                color: 'ct-block',
+                halls: ['CT 10', 'CT 11', 'CT 12']
+            },
+            EEE: {
+                name: 'EEE Block',
+                icon: '⚡',
+                color: 'eee-block',
+                halls: ['EEE1', 'EEE2', 'EEE3']
+            },
+            M: {
+                name: 'M Block',
+                icon: '⚙️',
+                color: 'm-block',
+                halls: ['M - 2', 'M - 3', 'M - 6']
+            },
+            AH: {
+                name: 'AH Block',
+                icon: '🔧',
+                color: 'ah-block',
+                halls: ['AH1', 'AH2', 'AH3']
+            },
+            A: {
+                name: 'A Block',
+                icon: '📚',
+                color: 'a-block',
+                halls: ['A - 1', 'A - 3', 'A - 4']
+            }
+        };
+
+        // Department Configuration (Real Data)
+        // Max 66 students per class, 4 years (22, 23, 24, 25)
+        const departments = {
+            AUTO: { code: '102', name: 'Automobile', abbr: 'AUTO', color: 'auto', maxStrength: 66 },
+            CIVIL: { code: '103', name: 'Civil', abbr: 'CIVIL', color: 'civil', maxStrength: 66 },
+            CSE: { code: '104', name: 'Computer Science', abbr: 'CSE', color: 'cse', maxStrength: 66 },
+            EEE: { code: '105', name: 'Electrical & Electronics', abbr: 'EEE', color: 'eee', maxStrength: 66 },
+            ECE: { code: '106', name: 'Electronics & Comm', abbr: 'ECE', color: 'ece', maxStrength: 66 },
+            MECH: { code: '114', name: 'Mechanical', abbr: 'MECH', color: 'mech', maxStrength: 66 },
+            CSEDS: { code: '159', name: 'CSE Data Science', abbr: 'CSEDS', color: 'cseds', maxStrength: 66 },
+            IT: { code: '205', name: 'Information Tech', abbr: 'IT', color: 'it', maxStrength: 66 }
+        };
+
+        // ==================== REGISTER NUMBER PARSING ====================
+        // Format: 7311-24-106-039
+        // 7311 = College Code (GCE Erode)
+        // 24 = Year of Joining
+        // 106 = Department Code
+        // 039 = Roll Sequence
+
+        function parseRegNo(regNo) {
+            if (!regNo || regNo.length < 12) return null;
+
+            const collegeCode = regNo.substring(0, 4);  // 7311
+            const yearJoined = regNo.substring(4, 6);   // 24
+            const deptCode = regNo.substring(6, 9);     // 106
+            const rollSeq = regNo.substring(9, 12);     // 039
+
+            // Find department by code
+            let deptKey = null;
+            let deptInfo = null;
+            Object.keys(departments).forEach(key => {
+                if (departments[key].code === deptCode) {
+                    deptKey = key;
+                    deptInfo = departments[key];
+                }
+            });
+
+            if (!deptInfo) return null;
+
+            // Calculate year of study (Current year 2025/26)
+            const currentYear = 26; // 2026
+            const joinYear = parseInt(yearJoined);
+            const yearOfStudy = currentYear - joinYear;
+
+            // Generate Roll Number (e.g., 24ECE39)
+            const rollNo = `${yearJoined}${deptInfo.abbr}${parseInt(rollSeq)}`;
+
+            // Determine if I Year (joined 2025 OR CSE DS which only has 1st years)
+            const isFirstYear = yearJoined === '25' || deptCode === '159';
+
+            // Determine block assignment
+            let block = 'T'; // Default
+            if (isFirstYear) {
+                block = 'I_YEAR';
+            } else {
+                // Senior year block assignment based on department
+                const deptBlockMap = {
+                    'AUTO': 'T', 'ECE': 'T',
+                    'CSE': 'EEE', 'EEE': 'EEE',
+                    'CIVIL': 'CT', 'IT': 'CT',
+                    'MECH': 'AH', 'CSEDS': 'AH'
+                };
+                block = deptBlockMap[deptKey] || 'A';
+            }
+
+            return {
+                regNo: regNo,
+                collegeCode: collegeCode,
+                yearJoined: yearJoined,
+                deptCode: deptCode,
+                rollSeq: parseInt(rollSeq),
+                department: deptKey,
+                deptName: deptInfo.name,
+                abbr: deptInfo.abbr,
+                color: deptInfo.color,
+                yearOfStudy: yearOfStudy,
+                rollNo: rollNo,
+                isFirstYear: isFirstYear,
+                block: block
+            };
+        }
+
+        // Generate roll number from reg number
+        function generateRollNo(regNo) {
+            const parsed = parseRegNo(regNo);
+            return parsed ? parsed.rollNo : regNo;
+        }
+
+        // Real Allocation Pattern (from provided data)
+        const allocationPattern = {
+            'T 1': { deptA: 'AUTO', countA: 13, deptB: 'ECE', countB: 12 },
+            'T 2': { deptA: 'AUTO', countA: 12, deptB: 'ECE', countB: 13 },
+            'T 3': { deptA: 'AUTO', countA: 13, deptB: 'ECE', countB: 12 },
+            'T 6 A': { deptA: 'AUTO', countA: 10, deptB: 'ECE', countB: 13 },
+            'T 6 B': { deptA: 'CSE', countA: 7, deptB: 'EEE', countB: 5, deptC: 'ECE', countC: 6, deptD: 'MECH', countD: 5 },
+            'CT 10': { deptA: 'CSE', countA: 12, deptB: 'EEE', countB: 13 },
+            'CT 11': { deptA: 'CIVIL', countA: 12, deptB: 'IT', countB: 13 },
+            'CT 12': { deptA: 'CIVIL', countA: 13, deptB: 'IT', countB: 12 },
+            'EEE1': { deptA: 'CSE', countA: 13, deptB: 'EEE', countB: 12 },
+            'EEE2': { deptA: 'CSE', countA: 12, deptB: 'EEE', countB: 13 },
+            'EEE3': { deptA: 'CSE', countA: 13, deptB: 'EEE', countB: 12 },
+            'M - 2': { deptA: 'CIVIL', countA: 12, deptB: 'IT', countB: 13 },
+            'M - 3': { deptA: 'CIVIL', countA: 13, deptB: 'IT', countB: 12 },
+            'M - 6': { deptA: 'MECH', countA: 13, deptB: 'CSEDS', countB: 12 },
+            'AH1': { deptA: 'MECH', countA: 12, deptB: 'CSEDS', countB: 13 },
+            'AH2': { deptA: 'MECH', countA: 13, deptB: 'CSEDS', countB: 12 },
+            'AH3': { deptA: 'MECH', countA: 12, deptB: 'CSEDS', countB: 13 },
+            'A - 1': { deptA: 'ARREAR', countA: 18 },
+            'A - 3': { deptA: 'ARREAR', countA: 20 },
+            'A - 4': { deptA: 'CSEDS', countA: 5, deptB: 'IT', countB: 5, deptC: 'ARREAR', countC: 6 }
+        };
+
+        let students = [];
+        let halls = [];
+        let currentBlockKey = 'T';
+        let currentHallIndex = 0;
+        let highlightedSeat = null;
+        let highlightedHall = null;
+
+        // ==================== GENERATE DATA ====================
+        // STRICT: 8 departments × 4 years × 66 students = 2,112 total
+        // 66 = Regular (001-055) + Lateral Entry (501-510) + Transfer (056-066)
+        const CLASS_STRENGTH = 66;
+        const YEARS = ['22', '23', '24', '25']; // 4th, 3rd, 2nd, 1st year
+
+        function generateStudents() {
+            students = [];
+            let id = 1;
+
+            YEARS.forEach(year => {
+                Object.keys(departments).forEach(deptKey => {
+                    const dept = departments[deptKey];
+
+                    // CSE DS (159) only exists for 1st year (2025)
+                    if (deptKey === 'CSEDS' && year !== '25') return;
+
+                    // === Regular Students (001-055) ===
+                    for (let i = 1; i <= 55; i++) {
+                        const regNo = `7311${year}${dept.code}${String(i).padStart(3, '0')}`;
+                        students.push(createStudent(id++, regNo, dept, year, 'Regular'));
+                    }
+
+                    // === Lateral Entry Students (501-510) - 2nd year onwards ===
+                    if (year !== '25') {
+                        for (let i = 501; i <= 510; i++) {
+                            const regNo = `7311${year}${dept.code}${String(i).padStart(3, '0')}`;
+                            students.push(createStudent(id++, regNo, dept, year, 'Lateral'));
+                        }
+                    }
+
+                    // === Transfer Students to complete 66 ===
+                    const lateralCount = year === '25' ? 0 : 10;
+                    const transferNeeded = CLASS_STRENGTH - 55 - lateralCount; // Fill to 66
+                    for (let i = 56; i < 56 + transferNeeded; i++) {
+                        const regNo = `7311${year}${dept.code}${String(i).padStart(3, '0')}`;
+                        students.push(createStudent(id++, regNo, dept, year, 'Transfer'));
+                    }
+                });
+            });
+
+            console.log(`Generated ${students.length} students (8 depts × 4 years × 66 = 2112)`);
+        }
+
+        // Helper to create student object
+        function createStudent(id, regNo, dept, year, studentType) {
+            const parsed = parseRegNo(regNo);
+            const rollSeq = parseInt(regNo.substring(9));
+            const isLateral = studentType === 'Lateral';
+
+            return {
+                id: id,
+                regNo: regNo,
+                rollNo: isLateral ? `${year}${dept.abbr}L${rollSeq - 500}` : `${year}${dept.abbr}${rollSeq}`,
+                name: isLateral ? `${dept.abbr} Lateral ${rollSeq - 500}` : `${dept.abbr} Student ${rollSeq}`,
+                department: Object.keys(departments).find(k => departments[k].code === dept.code),
+                color: dept.color,
+                abbr: dept.abbr,
+                yearJoined: year,
+                yearOfStudy: 26 - parseInt(year),
+                isFirstYear: year === '25',
+                studentType: studentType,
+                hall: null,
+                seat: null,
+                seatLabel: null
+            };
+        }
+
+        function generateHalls() {
+            halls = [];
+            Object.keys(blocks).forEach(blockKey => {
+                blocks[blockKey].halls.forEach(hallName => {
+                    halls.push({
+                        id: hallName,
+                        name: hallName,
+                        block: blockKey,
+                        blockName: blocks[blockKey].name,
+                        capacity: 25,
+                        seats: Array(25).fill(null),
+                        departments: []
+                    });
+                });
+            });
+        }
+
+        // ==================== ZIGZAG ALLOCATION ====================
+        function autoAssign() {
+            // Reset
+            students.forEach(s => { s.hall = null; s.seat = null; s.seatLabel = null; });
+            halls.forEach(h => { h.seats = Array(25).fill(null); h.departments = []; });
+
+            // Track student indices per department
+            const deptIndices = {};
+            Object.keys(departments).forEach(d => deptIndices[d] = 0);
+
+            // Apply real allocation pattern
+            halls.forEach(hall => {
+                const pattern = allocationPattern[hall.id];
+                if (!pattern) return;
+
+                const deptAStudents = pattern.deptA ? students.filter(s => s.department === pattern.deptA && s.hall === null).slice(0, pattern.countA || 13) : [];
+                const deptBStudents = pattern.deptB ? students.filter(s => s.department === pattern.deptB && s.hall === null).slice(0, pattern.countB || 12) : [];
+
+                let idxA = 0, idxB = 0;
+
+                // Column-by-column zigzag
+                for (let col = 0; col < 5; col++) {
+                    for (let row = 0; row < 5; row++) {
+                        const seatIndex = row * 5 + col;
+
+                        if ((row + col) % 2 === 0) {
+                            if (idxA < deptAStudents.length) {
+                                const student = deptAStudents[idxA];
+                                hall.seats[seatIndex] = student;
+                                student.hall = hall.id;
+                                student.seat = seatIndex;
+                                student.seatLabel = `${student.department} ${String(idxA + 1).padStart(2, '0')}`;
+                                idxA++;
+                            }
+                        } else {
+                            if (idxB < deptBStudents.length) {
+                                const student = deptBStudents[idxB];
+                                hall.seats[seatIndex] = student;
+                                student.hall = hall.id;
+                                student.seat = seatIndex;
+                                student.seatLabel = `${student.department} ${String(idxB + 1).padStart(2, '0')}`;
+                                idxB++;
+                            }
+                        }
+                    }
+                }
+
+                // Record departments
+                if (deptAStudents.length > 0) hall.departments.push(pattern.deptA);
+                if (deptBStudents.length > 0) hall.departments.push(pattern.deptB);
+            });
+
+            renderAll();
+            showFeedback();
+        }
+
+        function resetSeating() {
+            students.forEach(s => { s.hall = null; s.seat = null; s.seatLabel = null; });
+            halls.forEach(h => { h.seats = Array(25).fill(null); h.departments = []; });
+            highlightedSeat = null;
+            highlightedHall = null;
+            renderAll();
+        }
+
+        function showFeedback() {
+            const btn = document.querySelector('.btn-primary');
+            btn.textContent = '✓ Assigned!';
+            btn.style.background = 'linear-gradient(135deg, #39ff14, #00ff88)';
+            setTimeout(() => {
+                btn.textContent = '⚡ Auto-Assign';
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        // ==================== RENDERING ====================
+        function renderAll() {
+            renderBlockCards();
+            renderHallList();
+            renderSeats();
+            updateStats();
+        }
+
+        function renderBlockCards() {
+            const container = document.getElementById('blockCards');
+            container.innerHTML = '';
+
+            Object.keys(blocks).forEach(key => {
+                const block = blocks[key];
+                const blockHalls = halls.filter(h => h.block === key);
+                const filled = blockHalls.reduce((sum, h) => sum + h.seats.filter(s => s).length, 0);
+                const total = blockHalls.length * 25;
+                const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+
+                const card = document.createElement('div');
+                card.className = `block-card ${block.color} ${key === currentBlockKey ? 'active' : ''}`;
+                card.onclick = () => selectBlock(key);
+                card.innerHTML = `
+                    <div class="block-icon">${block.icon}</div>
+                    <div class="block-name">${block.name}</div>
+                    <div class="block-halls">${block.halls.length} Halls</div>
+                    <div class="block-stats">
+                        <span style="font-size:0.65rem;color:var(--text-secondary)">${filled}/${total}</span>
+                        <span class="fill-badge ${pct > 50 ? 'filling' : 'available'}">${pct}%</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectBlock(key) {
+            currentBlockKey = key;
+            currentHallIndex = 0;
+            renderBlockCards();
+            renderHallList();
+            if (halls.filter(h => h.block === key).length > 0) {
+                selectHall(0);
+            }
+        }
+
+        function renderHallList() {
+            const container = document.getElementById('hallList');
+            container.innerHTML = '';
+            const blockHalls = halls.filter(h => h.block === currentBlockKey);
+
+            blockHalls.forEach((hall, index) => {
+                const filled = hall.seats.filter(s => s).length;
+                const pct = (filled / hall.capacity) * 100;
+
+                const div = document.createElement('div');
+                div.className = `hall-item ${index === currentHallIndex ? 'active' : ''}`;
+                div.onclick = () => selectHall(index);
+                div.innerHTML = `
+                    <div class="hall-name">${hall.name}</div>
+                    <div class="hall-depts">${hall.departments.join(' + ') || 'Empty'}</div>
+                    <div class="hall-capacity">${filled}/${hall.capacity} seats</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectHall(index) {
+            currentHallIndex = index;
+            const blockHalls = halls.filter(h => h.block === currentBlockKey);
+            const hall = blockHalls[index];
+
+            document.getElementById('currentHallTitle').textContent = hall.name;
+            document.getElementById('currentHallInfo').textContent =
+                `${blocks[currentBlockKey].name} | ${hall.departments.join(' + ') || 'Empty'} | 25 Seats`;
+
+            renderHallList();
+            renderSeats();
+        }
+
+        function renderSeats() {
+            const grid = document.getElementById('seatGrid');
+            grid.innerHTML = '';
+
+            const blockHalls = halls.filter(h => h.block === currentBlockKey);
+            if (blockHalls.length === 0) return;
+
+            const hall = blockHalls[currentHallIndex];
+            if (!hall) return;
+
+            for (let i = 0; i < 25; i++) {
+                const seat = document.createElement('div');
+                const student = hall.seats[i];
+                const row = Math.floor(i / 5) + 1;
+                const col = (i % 5) + 1;
+                const seatCode = `R${row}C${col}`;
+
+                seat.className = 'seat';
+
+                if (student) {
+                    seat.classList.add(`seat-${student.color}`);
+                    if (highlightedSeat === i && highlightedHall === hall.id) {
+                        seat.classList.add('seat-your-seat');
+                    }
+                    seat.innerHTML = `<div class="seat-label">${student.seatLabel || student.department}</div><div class="seat-number">${seatCode}</div>`;
+                    seat.onclick = () => showSeatDetails(student, seatCode);
+                } else {
+                    seat.classList.add('seat-empty');
+                    seat.innerHTML = `<div class="seat-label">—</div><div class="seat-number">${seatCode}</div>`;
+                }
+
+                grid.appendChild(seat);
+            }
+        }
+
+        function showSeatDetails(student, seatCode) {
+            document.getElementById('modalName').textContent = student.name;
+            document.getElementById('modalRegNo').textContent = student.regNo;
+            document.getElementById('modalDept').textContent = student.department;
+            document.getElementById('modalSeat').textContent = seatCode;
+            document.getElementById('seatModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('seatModal').classList.remove('active');
+        }
+
+        // ==================== SEARCH ====================
+        // Search by Register Number OR Roll Number (e.g., 24ECE39)
+        function searchStudent(event) {
+            if (event.key === 'Enter') {
+                const query = document.getElementById('studentSearch').value.trim().toUpperCase();
+
+                // Search by reg no or roll no
+                const student = students.find(s =>
+                    s.regNo.includes(query) ||
+                    (s.rollNo && s.rollNo.toUpperCase().includes(query))
+                );
+
+                if (student && student.hall) {
+                    const hall = halls.find(h => h.id === student.hall);
+                    if (hall) {
+                        currentBlockKey = hall.block;
+                        const blockHalls = halls.filter(h => h.block === hall.block);
+                        currentHallIndex = blockHalls.findIndex(h => h.id === hall.id);
+
+                        highlightedSeat = student.seat;
+                        highlightedHall = hall.id;
+
+                        // Update pass with roll number
+                        document.getElementById('passRegNo').textContent = student.regNo;
+                        document.getElementById('passName').textContent = `${student.rollNo} - ${student.name}`;
+                        document.getElementById('passDept').textContent = `${student.department} (Year ${student.yearOfStudy})`;
+                        document.getElementById('passBlock').textContent = hall.blockName;
+                        document.getElementById('passHall').textContent = `Hall ${hall.name}`;
+
+                        const row = Math.floor(student.seat / 5) + 1;
+                        const col = (student.seat % 5) + 1;
+                        document.getElementById('passSeat').textContent = `R${row}C${col}`;
+                        document.getElementById('passSeatPos').textContent = `Row ${row}, Column ${col}`;
+
+                        renderAll();
+                        document.querySelector('.seat-grid-container').scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    alert(student ? 'Not assigned yet. Click Auto-Assign first.' : 'Student not found. Try: 731125106001 or 25ECE1');
+                }
+            }
+        }
+
+        function updateStats() {
+            const assigned = students.filter(s => s.hall).length;
+            const usedHalls = halls.filter(h => h.seats.some(s => s)).length;
+            const capacity = usedHalls > 0 ? Math.round((assigned / (usedHalls * 25)) * 100) : 0;
+
+            document.getElementById('statStudents').textContent = assigned;
+            document.getElementById('statHalls').textContent = usedHalls;
+            document.getElementById('statCapacity').textContent = capacity + '%';
+        }
+
+        function changeSession() {
+            // In a real system, this would load different allocation data
+            renderAll();
+        }
+
+        // ==================== INIT ====================
+        function init() {
+            generateStudents();
+            generateHalls();
+            renderAll();
+        }
+
+        document.getElementById('seatModal').onclick = (e) => {
+            if (e.target.id === 'seatModal') closeModal();
+        };
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

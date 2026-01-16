@@ -1,0 +1,10 @@
+node_modules/
+.next/
+__pycache__/
+*.pyc
+instance/
+uploads/
+reports/
+.env
+.DS_Store
+*.db
