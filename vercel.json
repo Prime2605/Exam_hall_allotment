@@ -1,0 +1,30 @@
+{
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/index.py",
+            "use": "@vercel/python"
+        },
+        {
+            "src": "frontend/package.json",
+            "use": "@vercel/next"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/index.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/frontend/$1"
+        }
+    ],
+    "env": {
+        "SUPABASE_URL": "https://voaqytqngzasifqenpyo.supabase.co",
+        "SUPABASE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvYXF5dHFuZ3phc2lmcWVucHlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NjIwMjMsImV4cCI6MjA4NDEzODAyM30.DaObS3EVF5Sw8GpiMHgGiUvePuExnlrehh385TGHzls",
+        "NEXT_PUBLIC_SUPABASE_URL": "https://voaqytqngzasifqenpyo.supabase.co",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvYXF5dHFuZ3phc2lmcWVucHlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NjIwMjMsImV4cCI6MjA4NDEzODAyM30.DaObS3EVF5Sw8GpiMHgGiUvePuExnlrehh385TGHzls"
+    }
+}
