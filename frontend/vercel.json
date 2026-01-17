@@ -1,12 +1,26 @@
 {
+    "framework": "nextjs",
     "buildCommand": "npm run build",
     "outputDirectory": ".next",
     "installCommand": "npm install",
-    "framework": "nextjs",
-    "regions": [
-        "iad1"
-    ],
     "env": {
-        "NEXT_PUBLIC_API_URL": "https://examhallallotment-production.up.railway.app"
-    }
+        "NEXT_PUBLIC_SUPABASE_URL": "https://voaqytqngzasifqenpyo.supabase.co",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvYXF5dHFuZ3phc2lmcWVucHlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NjIwMjMsImV4cCI6MjA4NDEzODAyM30.DaObS3EVF5Sw8GpiMHgGiUvePuExnlrehh385TGHzls",
+        "NEXT_PUBLIC_API_URL": ""
+    },
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "X-Frame-Options",
+                    "value": "DENY"
+                }
+            ]
+        }
+    ]
 }

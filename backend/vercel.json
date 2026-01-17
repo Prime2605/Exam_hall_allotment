@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "app.py",
+            "use": "@vercel/python",
+            "config": {
+                "maxLambdaSize": "15mb"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "app.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "app.py"
+        }
+    ],
+    "env": {
+        "SUPABASE_URL": "https://voaqytqngzasifqenpyo.supabase.co",
+        "SUPABASE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvYXF5dHFuZ3phc2lmcWVucHlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NjIwMjMsImV4cCI6MjA4NDEzODAyM30.DaObS3EVF5Sw8GpiMHgGiUvePuExnlrehh385TGHzls"
+    }
+}
